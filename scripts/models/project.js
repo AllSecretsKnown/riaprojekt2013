@@ -25,7 +25,6 @@ define(['backbone', 'underscore', 'status', 'task'], function(Backbone, _, Statu
 		// Validate when created or updated
 		validate: function(attrs) {
 
-			console.log('attrs', attrs);
 			// Array to hold on to errors
 			var errors = [];
 			if (!attrs.p_name) {
