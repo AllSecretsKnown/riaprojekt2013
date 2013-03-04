@@ -8,13 +8,18 @@ define(['backbone', 'underscore'], function(Backbone, _){
 		},
 
 		validate: function(attrs) {
-			if ( attrs.task_name === '' ) {
-				return 'A name is required!';
+
+			var errors = [];
+
+			if (!attrs.task_name) {
+				errors.push({name: 'task_name', message: 'A name is required!'}) ;
 			}
 
-			if ( attrs.task_description === '' ) {
-				return 'A description is required!';
+			if (!attrs.task_description) {
+				errors.push({name: 'task_description', message: 'A description is required!'}) ;
 			}
+
+			return errors.length > 0 ? errors : false;
 		}
 	});
 });
