@@ -4,14 +4,34 @@ define(['jquery', 'underscore', 'backbone', 'task'], function($, _, Backbone, Ta
 		template: _.template( $('#addTaskTemplate').html() || '' ),
 
 		//Construct
-		initialize: function(){
-			this.task = new Task();
+		initialize: function(opts){
+			// If no task is provided at initialization, create one!
+			this.task = opts && opts.task || new Task();
+
+			// Listen to model errors
+			this.listenTo(this.task, 'error', this.renderErrors, this);
 		},
 		
 		//Function to Render View
 		render: function(){
 			this.$el.html( this.template( this.task.toJSON() ) );
 			return this;
+		},
+
+		// Function for displaying the current project model errors
+		renderErrors: function(model, errors) {
+			// Grabs the element that errors will be appended to..
+			var formEl = this.$('#errorContainer');
+
+			// ..empty it and then show it
+			formEl.html('').show();
+
+			// Iterate through all errors and append them to the container
+			// Also decorate the input fields in a cute pink color
+			_.each(errors, function(error) {
+			  this.$("#" + error.name).parent('label').addClass('error');
+			  formEl.prepend(error.message + "<br />");
+			}, this)
 		},
 
 		//Set up event listeners
@@ -29,14 +49,16 @@ define(['jquery', 'underscore', 'backbone', 'task'], function($, _, Backbone, Ta
 		//Function to process input from form
 		processInput: function(e){
 			e.preventDefault();
-
-			//Extract input and populate the model
-			this.task.set('task_name', this.$('#task_name').val());
-			this.task.set('task_description', this.$('#task_description').val());
-			this.task.set('task_status', this.$('#task_status').val());
-
-			//Call save task, send the task on by to save
-			this.saveTask(this.task);
+			formInput = {
+				task_name: this.$('#task_name').val() || '',
+				task_description: this.$('#task_description').val() || '',
+				task_status: this.$('#task_status').val() || ''
+			}
+			console.log(formInput);
+			// Run callBack if model's attributes gets set without validation errors
+			// Else the model's error-event will trigger
+			if (this.task.set(formInput)){this.saveTask(this.task);}
+			
 		},
 
 		//Function to save a new task

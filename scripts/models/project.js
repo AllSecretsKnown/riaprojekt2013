@@ -24,13 +24,19 @@ define(['backbone', 'underscore', 'status', 'task'], function(Backbone, _, Statu
 
 		// Validate when created or updated
 		validate: function(attrs) {
-			if ( attrs.p_name === '' ) {
-				return 'A name is required!';
+
+			// Array to hold on to errors
+			var errors = [];
+			if (!attrs.p_name) {
+				errors.push({name: 'p_name', message: 'A name is required!'});
 			}
 
-			if ( attrs.p_description === '' ) {
-				return 'A description is required!';
+			if (!attrs.p_description) {
+				errors.push({name: 'p_description', message: 'A description is required!'});
 			}
+			// Return false if no errors added
+			return errors.length > 0 ? errors : false;
+
 		},
 
 		//Related objects
