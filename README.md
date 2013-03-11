@@ -1,9 +1,10 @@
-DEPRECATED!!! Ria - JavaScript med backbone, underscore, jquery och require
+DEPRECATED!!! USE SCRUMLET 
+Ria - JavaScript med backbone, underscore, jquery och require
 ===========
 
 ##Projektverktyg i javascript
 
-Appen finsn under ett annat repo
+Appen finns under ett annat repo
 
 
 
